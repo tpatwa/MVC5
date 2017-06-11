@@ -20,24 +20,40 @@ namespace Vidly.Controllers
         }
 
 
-      
-
-        public ActionResult New()
+        // GET: Customers
+        //Using
+        public ViewResult Index()
         {
-
-            //var membershipTypes = _context.MembershipTypes.ToList();
-            //var viewModel = new CustomerFormViewModel
-            //{
-            //    //For the new form if the Customer is not intialized the form will throw error.
-            //    Customer = new Customer(),
-            //    MembershipTypes = membershipTypes
-            //};
-
-            //return View("CustomerForm", viewModel);
-            return View();
-
+            //var movies = _context.Movies.Include(m => m.Genre).ToList();
+            if (User.IsInRole("CanManageMovies"))
+            {
+                return View("List");
+            }
+            else
+            {
+                return View("ReadOnlyList");
+            }
 
         }
+
+        public ActionResult Edit(int id)
+        {
+            var customer = _context.Customers.SingleOrDefault(c => c.Id == id);
+
+            if (customer == null)
+                return HttpNotFound();
+
+            var viewModel = new CustomerFormViewModel
+            {
+                Customer = customer,
+                MembershipTypes = _context.MembershipTypes.ToList()
+
+            };
+             
+
+            return View("CustomerForm", viewModel);
+        }
+
 
         [HttpPost]
         public ActionResult Save(Customer customer)
@@ -73,43 +89,33 @@ namespace Vidly.Controllers
             return RedirectToAction("Index", "Customers");
         }
 
-        public ActionResult Edit(int id)
-        {
-            var customer = _context.Customers.SingleOrDefault(c => c.Id == id);
 
-            if (customer == null)
-                return HttpNotFound();
 
-            var viewModel = new CustomerFormViewModel
-                {
-                    Customer = customer,
-                    MembershipTypes = _context.MembershipTypes.ToList()
+        //public ActionResult New()
+        //{
 
-                }
-                ;
+        //    //var membershipTypes = _context.MembershipTypes.ToList();
+        //    //var viewModel = new CustomerFormViewModel
+        //    //{
+        //    //    //For the new form if the Customer is not intialized the form will throw error.
+        //    //    Customer = new Customer(),
+        //    //    MembershipTypes = membershipTypes
+        //    //};
 
-            return View("CustomerForm", viewModel);
-        }
+        //    //return View("CustomerForm", viewModel);
+        //    return View();
+
+
+        //}
+
+
 
         protected override void Dispose(bool disposing)
         {
             _context.Dispose();
         }
 
-        // GET: Customers
-        public ViewResult Index()
-        {
-            //var movies = _context.Movies.Include(m => m.Genre).ToList();
-            if (User.IsInRole("CanManageMovies"))
-            {
-                return View("List");
-            }
-            else
-            {
-                return View("ReadOnlyList");
-            }
-
-        }
+    
 
 
     }

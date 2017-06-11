@@ -23,34 +23,7 @@ namespace Vidly.Controllers
             _context.Dispose();
 
         } 
-        // GET: Movies
-        public ActionResult Random()
-        {
-
-            Movie movie = new Movie();
-            movie.Name = "Srek";
-            var customers = new List<Customer>
-            {
-                 new Customer{ Name="Customer 1" },
-                 new Customer{ Name="Customer 2" }
-
-            };
-            var viewModel = new RandomMovieViewModel
-            {
-                Movie = movie,
-                Customers = customers
-            };
-
-
-
-            return View(viewModel);
-
-            //return Content(movie);
-            //retunr HttpResultNotFound();
-            //retunr new EmptyResult();
-            //retunr RedirectToAction("Index(action)","Home",new {page=1,sortBy="Name"}
-
-        }
+      
 
         public ViewResult Index()
         {
@@ -129,7 +102,34 @@ namespace Vidly.Controllers
         }
 
 
+        // GET: Movies
+        public ActionResult Random()
+        {
 
+            Movie movie = new Movie();
+            movie.Name = "Srek";
+            var customers = new List<Customer>
+            {
+                new Customer{ Name="Customer 1" },
+                new Customer{ Name="Customer 2" }
+
+            };
+            var viewModel = new RandomMovieViewModel
+            {
+                Movie = movie,
+                Customers = customers
+            };
+
+
+
+            return View(viewModel);
+
+            //return Content(movie);
+            //retunr HttpResultNotFound();
+            //retunr new EmptyResult();
+            //retunr RedirectToAction("Index(action)","Home",new {page=1,sortBy="Name"}
+
+        }
 
 
         public ActionResult Details(int id)
